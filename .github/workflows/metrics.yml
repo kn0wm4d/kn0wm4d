@@ -1,7 +1,7 @@
 # GitHub Metrics Workflow
 # 
 # This workflow generates a comprehensive metrics SVG for your GitHub profile
-# using the lowlighter/metrics action.
+# using the kn0wm4d/metrics action (fork).
 #
 # Setup Instructions:
 # 1. Create a Personal Access Token (Classic) at https://github.com/settings/tokens
@@ -41,7 +41,7 @@ jobs:
       contents: write
     steps:
       - name: Generate GitHub Metrics
-        uses: lowlighter/metrics@latest
+        uses: kn0wm4d/metrics@master
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           
