@@ -1,3 +1,26 @@
+# GitHub Metrics Workflow
+# 
+# This workflow generates a comprehensive metrics SVG for your GitHub profile
+# using the lowlighter/metrics action.
+#
+# Setup Instructions:
+# 1. Create a Personal Access Token (Classic) at https://github.com/settings/tokens
+# 2. Select the following scopes:
+#    - public_repo (or repo for private stats)
+#    - read:user
+#    - read:org (optional, for organization stats)
+# 3. Add the token as a repository secret named METRICS_TOKEN
+#    - Go to repository Settings > Secrets and variables > Actions
+#    - Click "New repository secret"
+#    - Name: METRICS_TOKEN
+#    - Value: Your generated token
+# 4. The workflow will run automatically:
+#    - Daily at midnight UTC
+#    - Manually via workflow_dispatch
+#    - On push to main/master branches
+#
+# The generated metrics will be committed as github-metrics.svg
+
 name: Metrics
 on:
   # Schedule daily updates
@@ -23,6 +46,7 @@ jobs:
           template: classic
           base: header, activity, community, repositories, metadata
           config_timezone: America/New_York
+          filename: github-metrics.svg
           
           # Isometric commit calendar
           plugin_isocalendar: yes
