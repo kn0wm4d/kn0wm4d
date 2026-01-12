@@ -23,12 +23,16 @@
 
 name: Metrics
 on:
-  # Schedule daily updates
-  schedule: [{cron: "0 0 * * *"}]
+  # Schedule daily updates at midnight UTC
+  schedule:
+    - cron: "0 0 * * *"
   # Manual trigger
   workflow_dispatch:
   # Run on push (for testing)
-  push: {branches: ["main", "master"]}
+  push:
+    branches:
+      - main
+      - master
 
 jobs:
   github-metrics:
@@ -45,7 +49,7 @@ jobs:
           user: kn0wm4d
           template: classic
           base: header, activity, community, repositories, metadata
-          config_timezone: America/New_York
+          config_timezone: UTC
           filename: github-metrics.svg
           
           # Isometric commit calendar
