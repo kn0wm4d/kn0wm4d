@@ -1,0 +1,90 @@
+# GitHub Metrics Workflow
+# 
+# This workflow generates a comprehensive metrics SVG for your GitHub profile
+# using the kn0wm4d/metrics action (fork).
+#
+# Setup Instructions:
+# 1. Create a Personal Access Token (Classic) at https://github.com/settings/tokens
+# 2. Select the following scopes:
+#    - public_repo (or repo for private stats)
+#    - read:user
+#    - read:org (optional, for organization stats)
+# 3. Add the token as a repository secret named METRICS_TOKEN
+#    - Go to repository Settings > Secrets and variables > Actions
+#    - Click "New repository secret"
+#    - Name: METRICS_TOKEN
+#    - Value: Your generated token
+# 4. The workflow will run automatically:
+#    - Daily at midnight UTC
+#    - Manually via workflow_dispatch
+#    - On push to main/master branches
+#
+# The generated metrics will be committed as github-metrics.svg
+
+name: Metrics
+on:
+  # Schedule daily updates at midnight UTC
+  schedule:
+    - cron: "0 0 * * *"
+  # Manual trigger
+  workflow_dispatch:
+  # Run on push (for testing)
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Generate GitHub Metrics
+        uses: kn0wm4d/metrics@master
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          
+          # Options
+          user: kn0wm4d
+          template: classic
+          base: header, activity, community, repositories, metadata
+          config_timezone: UTC
+          filename: github-metrics.svg
+          
+          # Isometric commit calendar
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: half-year
+          
+          # Languages activity
+          plugin_languages: yes
+          plugin_languages_analysis_timeout: 15
+          plugin_languages_categories: markup, programming
+          plugin_languages_colors: github
+          plugin_languages_limit: 8
+          plugin_languages_recent_categories: markup, programming
+          plugin_languages_recent_days: 14
+          plugin_languages_recent_load: 300
+          plugin_languages_sections: most-used
+          plugin_languages_threshold: 0%
+          
+          # Notable contributions
+          plugin_notable: yes
+          plugin_notable_from: organization
+          plugin_notable_types: commit
+          
+          # Achievements
+          plugin_achievements: yes
+          plugin_achievements_threshold: C
+          plugin_achievements_secrets: yes
+          plugin_achievements_display: compact
+          plugin_achievements_limit: 0
+          
+          # Recent activity
+          plugin_activity: yes
+          plugin_activity_limit: 5
+          plugin_activity_load: 300
+          plugin_activity_days: 14
+          plugin_activity_filter: all
+          plugin_activity_visibility: all
+          plugin_activity_timestamps: yes
